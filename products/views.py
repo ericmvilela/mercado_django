@@ -11,3 +11,14 @@ class ProductsBehaviour(views.APIView):
 
         print(request.data)
         raise exceptions.NotFound('Code not found.')
+
+
+class AddProduct(views.APIView):
+    def post(self, request):
+        serializer = ProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        newProduct = Product(**serializer.data)
+        newProduct.save()
+
+        return response.Response(serializer.data, 201)
